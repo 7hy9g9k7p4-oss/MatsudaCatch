@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>まつかけキャッチ</title>
+
+<meta property="og:title" content="まつかけキャッチ">
+<meta property="og:description" content="がんばれ">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://7hy9g9k7p4-oss.github.io/MatsudaCatch/">
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #111;
+        color: white;
+        font-family: sans-serif;
+        overflow: hidden;
+        touch-action: none;
+    }
+
+    #game {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background: linear-gradient(#222, #555);
+    }
+
+    #score {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        z-index: 10;
+    }
+
+    #time {
+        position: absolute;
+        top: 55px;
+        left: 20px;
+        font-size: 20px;
+        z-index: 10;
+    }
+
+    #player {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 30px;
+        background: white;
+        border-radius: 15px;
+    }
+
+    .matsuda {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        object-fit: contain;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    #start {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 15px 40px;
+        font-size: 24px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        z-index: 20;
+    }
+
+    #gameover {
+        display: none;
+        position: absolute;
+        top: 40%;
+        width: 100%;
+        text-align: center;
+        font-size: 40px;
+        font-weight: bold;
+        z-index: 20;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <div id="score">SCORE: 0</div>
+    <div id="time">TIME: 30</div>
+
+    <div id="player"></div>
+
+    <button id="start">START</button>
+
+    <div id="gameover">
+        GAME OVER<br>
+        <span id="finalScore"></span>
+    </div>
+
+</div>
+
+<script>
+
+let score = 0;
+let time = 30;
+let gameRunning = false;
+
+let playerX = window.innerWidth / 2;
+
+const game = document.getElementById("game");
+const player = document.getElementById("player");
+const scoreText = document.getElementById("score");
+const timeText = document.getElementById("time");
+const startButton = document.getElementById("start");
+const gameover = document.getElementById("gameover");
+const finalScore = document.getElementById("finalScore");
+
+
+// プレイヤーを動かす
+function movePlayer(x) {
+
+    playerX = x;
+
+    const half = player.offsetWidth / 2;
+
+    if (playerX < half) {
+        playerX = half;
+    }
+
+    if (playerX > window.innerWidth - half) {
+        playerX = window.innerWidth - half;
+    }
+
+    player.style.left = playerX + "px";
+}
+
+
+// スマホ操作
+game.addEventListener("touchmove", function(e) {
+
+    if (!gameRunning) return;
+
+    const touch = e.touches[0];
+
+    movePlayer(touch.clientX);
+
+});
+
+
+// PC操作
+document.addEventListener("mousemove", function(e) {
+
+    if (!gameRunning) return;
+
+    movePlayer(e.clientX);
+
+});
+
+
+// 松田翔を落とす
+function createMatsuda() {
+
+    if (!gameRunning) return;
+
+    const matsuda = document.createElement("img");
+
+    matsuda.src = "matsuda.png";
+    matsuda.classList.add("matsuda");
+
+    const x = Math.random() * (window.innerWidth - 70);
+
+    let y = -70;
+
+    matsuda.style.left = x + "px";
+    matsuda.style.top = y + "px";
+
+    game.appendChild(matsuda);
+
+
+    const speed = 2 + Math.random() * 2;
+
+
+    function fall() {
+
+        if (!gameRunning) {
+            matsuda.remove();
+            return;
+        }
+
+        y += speed;
+
+        matsuda.style.top = y + "px";
+
+
+        // キャッチ判定
+        const matsudaRect = matsuda.getBoundingClientRect();
+        const playerRect = player.getBoundingClientRect();
+
+
+        if (
+            matsudaRect.bottom >= playerRect.top &&
+            matsudaRect.left < playerRect.right &&
+            matsudaRect.right > playerRect.left
+        ) {
+
+            score += 10;
+
+            scoreText.textContent = "SCORE: " + score;
+
+            matsuda.remove();
+
+            return;
+        }
+
+
+        // 画面外
+        if (y > window.innerHeight) {
+
+            matsuda.remove();
+
+            return;
+        }
+
+
+        requestAnimationFrame(fall);
+    }
+
+    fall();
+}
+
+
+// 1秒ごと
+let spawnTimer;
+let timeTimer;
+
+function startGame() {
+
+    score = 0;
+    time = 30;
+
+    scoreText.textContent = "SCORE: 0";
+    timeText.textContent = "TIME: 30";
+
+    gameRunning = true;
+
+    startButton.style.display = "none";
+    gameover.style.display = "none";
+
+
+    // 松田翔出現
+    spawnTimer = setInterval(function() {
+
+        createMatsuda();
+
+    }, 700);
+
+
+    // 時間
+    timeTimer = setInterval(function() {
+
+        time--;
+
+        timeText.textContent = "TIME: " + time;
+
+
+        if (time <= 0) {
+
+            endGame();
+
+        }
+
+    }, 1000);
+}
+
+
+// ゲーム終了
+function endGame() {
+
+    gameRunning = false;
+
+    clearInterval(spawnTimer);
+    clearInterval(timeTimer);
+
+    finalScore.textContent = "SCORE: " + score;
+
+    gameover.style.display = "block";
+
+    startButton.textContent = "もう一度";
+    startButton.style.display = "block";
+}
+
+
+startButton.addEventListener("click", startGame);
+
+</script>
+
+</body>
+</html>
