@@ -212,26 +212,25 @@ body {
 
 #gameover {
     display: none;
-
     position: absolute;
-
-    top: 30%;
+    top: 50%;
     left: 50%;
-
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
 
     z-index: 200;
 
     width: min(90%, 400px);
+    max-height: 90%;
+
+    overflow-y: auto;
 
     text-align: center;
 
     background: rgba(255,255,255,0.95);
 
-    padding: 30px;
+    padding: 25px;
 
     border-radius: 20px;
-
     border: 3px solid #111;
 }
 
@@ -274,12 +273,12 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
 
-    max-height: 220px;
+    max-height: 180px;
     overflow-y: auto;
 
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .caughtItem {
