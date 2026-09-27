@@ -237,14 +237,18 @@ body {
 
 #gameover h1 {
     margin: 0 0 15px;
-
-    font-size: 40px;
+    font-size: 24px;
 }
 
 #finalScore {
-    font-size: 24px;
+    font-size: 48px;
     font-weight: bold;
+    margin-bottom: 15px;
+}
 
+#scoreComment {
+    font-size: 22px;
+    font-weight: bold;
     margin-bottom: 20px;
 }
 
@@ -342,17 +346,21 @@ body {
 
     <div id="gameover">
 
-        <h1>
-            GAME OVER
-        </h1>
+    <h1>
+        SCORE
+    </h1>
 
-        <div id="finalScore">
-            SCORE: 0
-        </div>
+    <div id="finalScore">
+        0
+    </div>
 
-        <button id="restart">
-            もう一回
-        </button>
+    <div id="scoreComment">
+        秦野凱旋！
+    </div>
+
+    <button id="restart">
+        もう一回
+    </button>
 
     </div>
 
@@ -397,6 +405,9 @@ const gameover =
 
 const finalScore =
     document.getElementById("finalScore");
+    
+const scoreComment =
+    document.getElementById("scoreComment");
 
 const restartButton =
     document.getElementById("restart");
@@ -1005,7 +1016,45 @@ function endGame() {
 
 
     finalScore.textContent =
-        `SCORE: ${score.toLocaleString()}`;
+    score.toLocaleString();
+
+
+if (score < 0) {
+
+    finalScore.style.color = "blue";
+    scoreComment.textContent = "これじゃ来世もTPRに落ちるじゃねぇか";
+
+}
+else if (score < 1000) {
+
+    finalScore.style.color = "green";
+    scoreComment.textContent = "まぁこんなもんだろ";
+
+}
+else if (score < 10000) {
+
+    finalScore.style.color = "green";
+    scoreComment.textContent = "10月までは耐久できたようだな";
+
+}
+else if (score < 1000000) {
+
+    finalScore.style.color = "orange";
+    scoreComment.textContent = "やりますねぇすぎ！";
+
+}
+else if (score < 20020804) {
+
+    finalScore.style.color = "red";
+    scoreComment.textContent = "まんじ!まんこ!";
+
+}
+else {
+
+    finalScore.style.color = "purple";
+    scoreComment.textContent = "畦地健誠かと思ったぜ";
+
+}
 
 
     gameover.style.display =
