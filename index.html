@@ -1,370 +1,213 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>松田翔キャッチ</title>
+<title>下痢キャッチ</title>
 
 <style>
-
-/* =========================
-   基本設定
-========================= */
-
 * {
     box-sizing: border-box;
 }
 
+html,
 body {
-
     margin: 0;
-
-    background: #111;
-
-    color: white;
-
-    font-family: sans-serif;
-
+    padding: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-
-    touch-action: none;
+    font-family: sans-serif;
+    background: #111;
 }
-
-
-/* =========================
-   ゲーム画面
-========================= */
 
 #game {
-
     position: relative;
-
-    width: 100vw;
-
+    width: 100%;
     height: 100vh;
-
     overflow: hidden;
-
-    background:
-        linear-gradient(#222, #555);
+    background: linear-gradient(#87ceeb, #eaf9ff);
 }
 
-
-/* =========================
-   読み込み画面
-========================= */
-
-#loading {
-
+/* スコア */
+#score {
     position: absolute;
-
-    inset: 0;
-
-    background: #111;
-
+    top: 15px;
+    left: 15px;
     z-index: 100;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #111;
 }
 
+/* タイマー */
+#timer {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 100;
+    font-size: 24px;
+    font-weight: bold;
+    color: #111;
+}
+
+/* プレイヤー */
+#player {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 25px;
+    background: white;
+    border-radius: 10px;
+    border: 3px solid #111;
+    z-index: 50;
+}
+
+/* 落ちてくる松田 */
+.matsuda {
+    position: absolute;
+    top: -150px;
+    width: 80px;
+    height: auto;
+    user-select: none;
+    pointer-events: none;
+    z-index: 20;
+}
+
+/* ゲームオーバー */
+#gameover {
+    display: none;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    text-align: center;
+    background: rgba(255,255,255,0.95);
+    padding: 30px;
+    border-radius: 20px;
+    border: 3px solid #111;
+}
+
+#gameover h1 {
+    margin: 0 0 15px;
+    font-size: 40px;
+}
+
+#finalScore {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#restart {
+    padding: 12px 25px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* 読み込み画面 */
+#loading {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    color: white;
+}
 
 .loadingTitle {
-
     font-size: 40px;
-
     font-weight: bold;
-
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
-
 
 #loadingText {
-
     font-size: 20px;
 }
-
-
-/* =========================
-   スコア
-========================= */
-
-#score {
-
-    position: absolute;
-
-    top: 20px;
-
-    left: 20px;
-
-    font-size: 24px;
-
-    font-weight: bold;
-
-    z-index: 10;
-}
-
-
-/* =========================
-   残り時間
-========================= */
-
-#time {
-
-    position: absolute;
-
-    top: 55px;
-
-    left: 20px;
-
-    font-size: 20px;
-
-    z-index: 10;
-}
-
-
-/* =========================
-   プレイヤー
-========================= */
-
-#player {
-
-    position: absolute;
-
-    bottom: 100px;
-
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: 100px;
-
-    height: 30px;
-
-    background: white;
-
-    border-radius: 15px;
-
-    z-index: 5;
-}
-
-
-/* =========================
-   松田翔
-========================= */
-
-.matsuda {
-
-    position: absolute;
-
-    object-fit: contain;
-
-    user-select: none;
-
-    pointer-events: none;
-
-    z-index: 4;
-}
-
-
-/* =========================
-   STARTボタン
-========================= */
-
-#start {
-
-    position: absolute;
-
-    top: 50%;
-
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-
-    padding: 15px 40px;
-
-    font-size: 24px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    cursor: pointer;
-
-    z-index: 20;
-}
-
-
-/* =========================
-   GAME OVER
-========================= */
-
-#gameover {
-
-    display: none;
-
-    position: absolute;
-
-    top: 30%;
-
-    width: 100%;
-
-    text-align: center;
-
-    font-size: 40px;
-
-    font-weight: bold;
-
-    z-index: 20;
-}
-
-
-/* =========================
-   レインボー演出
-========================= */
-
-@keyframes rainbow {
-
-    0% {
-
-        filter:
-            hue-rotate(0deg)
-            saturate(5);
-    }
-
-    25% {
-
-        filter:
-            hue-rotate(90deg)
-            saturate(5);
-    }
-
-    50% {
-
-        filter:
-            hue-rotate(180deg)
-            saturate(5);
-    }
-
-    75% {
-
-        filter:
-            hue-rotate(270deg)
-            saturate(5);
-    }
-
-    100% {
-
-        filter:
-            hue-rotate(360deg)
-            saturate(5);
-    }
-}
-
 </style>
-
 </head>
-
 
 <body>
 
+<div id="loading">
+    <div class="loadingTitle">下痢キャッチ</div>
+    <div id="loadingText">読み込み中...</div>
+</div>
 
 <div id="game">
-
-
-    <!-- =========================
-         読み込み画面
-    ========================== -->
-
-    <div id="loading">
-
-        <div class="loadingTitle">
-            松田翔キャッチ
-        </div>
-
-        <div id="loadingText">
-            読み込み中...
-        </div>
-
-    </div>
-
-
-    <!-- =========================
-         スコア
-    ========================== -->
 
     <div id="score">
         SCORE: 0
     </div>
 
-
-    <!-- =========================
-         時間
-    ========================== -->
-
-    <div id="time">
+    <div id="timer">
         TIME: 30
     </div>
 
-
-    <!-- =========================
-         プレイヤー
-    ========================== -->
-
     <div id="player"></div>
 
-
-    <!-- =========================
-         STARTボタン
-    ========================== -->
-
-    <button id="start">
-        START
-    </button>
-
-
-    <!-- =========================
-         GAME OVER
-    ========================== -->
-
     <div id="gameover">
-
-        GAME OVER
-
-        <br>
-
-        <span id="finalScore"></span>
-
+        <h1>GAME OVER</h1>
+        <div id="finalScore">SCORE: 0</div>
+        <button id="restart">もう一回</button>
     </div>
-
 
 </div>
 
-
 <script>
 
+/* =========================
+   設定
+========================= */
 
-/* ==================================================
-   画像先読み
-================================================== */
+const NORMAL_COUNT = 20;
+const GOLD_COUNT = 15;
+const RARE_COUNT = 10;
+const FAKE_COUNT = 10;
 
-const loading =
-    document.getElementById("loading");
+const GAME_TIME = 30;
+const SPAWN_INTERVAL = 700;
 
-const loadingText =
-    document.getElementById("loadingText");
+
+/* =========================
+   DOM
+========================= */
+
+const game = document.getElementById("game");
+const player = document.getElementById("player");
+
+const scoreText = document.getElementById("score");
+const timerText = document.getElementById("timer");
+
+const gameover = document.getElementById("gameover");
+const finalScore = document.getElementById("finalScore");
+const restartButton = document.getElementById("restart");
+
+const loading = document.getElementById("loading");
+const loadingText = document.getElementById("loadingText");
+
+
+/* =========================
+   状態
+========================= */
+
+let score = 0;
+let timeLeft = GAME_TIME;
+
+let gameRunning = false;
+
+let spawnTimer = null;
+let countdownTimer = null;
 
 
 /* =========================
@@ -374,746 +217,454 @@ const loadingText =
 const imageList = [];
 
 
-/* 普通 20枚 */
-
-for (let i = 1; i <= 20; i++) {
-
-    imageList.push(
-        "normal" +
-        String(i).padStart(2, "0") +
-        ".png"
-    );
+/* 普通 */
+for (let i = 1; i <= NORMAL_COUNT; i++) {
+    imageList.push({
+        type: "normal",
+        src: `normal${i}.png`,
+        point: 10
+    });
 }
 
 
-/* ちょいレア 15枚 */
-
-for (let i = 1; i <= 15; i++) {
-
-    imageList.push(
-        "gold" +
-        String(i).padStart(2, "0") +
-        ".png"
-    );
+/* ちょいレア */
+for (let i = 1; i <= GOLD_COUNT; i++) {
+    imageList.push({
+        type: "gold",
+        src: `gold${i}.png`,
+        point: 50
+    });
 }
 
 
-/* レア 10枚 */
-
-for (let i = 1; i <= 10; i++) {
-
-    imageList.push(
-        "rare" +
-        String(i).padStart(2, "0") +
-        ".png"
-    );
+/* レア */
+for (let i = 1; i <= RARE_COUNT; i++) {
+    imageList.push({
+        type: "rare",
+        src: `rare${i}.png`,
+        point: 20020804
+    });
 }
 
 
-/* ハズレ 10枚 */
-
-for (let i = 1; i <= 10; i++) {
-
-    imageList.push(
-        "fake" +
-        String(i).padStart(2, "0") +
-        ".png"
-    );
+/* ハズレ */
+for (let i = 1; i <= FAKE_COUNT; i++) {
+    imageList.push({
+        type: "fake",
+        src: `fake${i}.png`,
+        point: -99999999
+    });
 }
 
 
 /* =========================
-   読み込み開始
+   画像プリロード
 ========================= */
 
-let loadedImages = 0;
+function preloadImages() {
 
+    let loaded = 0;
 
-imageList.forEach(function(src) {
+    const total = imageList.length;
 
+    imageList.forEach(item => {
 
-    const img = new Image();
+        const img = new Image();
 
+        img.onload = () => {
 
-    img.onload = function() {
-
-        loadedImages++;
-
-
-        loadingText.textContent =
-            "読み込み中... " +
-            loadedImages +
-            " / " +
-            imageList.length;
-
-
-        /* 全部読み込み完了 */
-
-        if (
-            loadedImages ===
-            imageList.length
-        ) {
+            loaded++;
 
             loadingText.textContent =
-                "READY!";
+                `読み込み中... ${loaded} / ${total}`;
 
+            if (loaded === total) {
 
-            setTimeout(function() {
+                setTimeout(() => {
+                    loading.style.display = "none";
+                    startGame();
+                }, 300);
 
-                loading.style.display =
-                    "none";
+            }
+        };
 
-            }, 500);
+        img.onerror = () => {
 
-        }
+            loaded++;
 
-    };
+            loadingText.textContent =
+                `読み込み中... ${loaded} / ${total}`;
 
+            if (loaded === total) {
 
-    img.onerror = function() {
+                setTimeout(() => {
+                    loading.style.display = "none";
+                    startGame();
+                }, 300);
 
-        loadedImages++;
+            }
+        };
 
-
-        loadingText.textContent =
-            "画像エラー " +
-            loadedImages +
-            " / " +
-            imageList.length;
-
-    };
-
-
-    img.src = src;
-
-});
-
-
-/* ==================================================
-   ゲーム変数
-================================================== */
-
-let score = 0;
-
-let time = 30;
-
-let gameRunning = false;
-
-let playerX =
-    window.innerWidth / 2;
-
-
-/* ==================================================
-   HTML取得
-================================================== */
-
-const game =
-    document.getElementById("game");
-
-const player =
-    document.getElementById("player");
-
-const scoreText =
-    document.getElementById("score");
-
-const timeText =
-    document.getElementById("time");
-
-const startButton =
-    document.getElementById("start");
-
-const gameover =
-    document.getElementById("gameover");
-
-const finalScore =
-    document.getElementById("finalScore");
-
-
-/* ==================================================
-   プレイヤー移動
-================================================== */
-
-function movePlayer(x) {
-
-
-    playerX = x;
-
-
-    const half =
-        player.offsetWidth / 2;
-
-
-    /* 左端 */
-
-    if (playerX < half) {
-
-        playerX = half;
-
-    }
-
-
-    /* 右端 */
-
-    if (
-        playerX >
-        window.innerWidth - half
-    ) {
-
-        playerX =
-            window.innerWidth - half;
-
-    }
-
-
-    player.style.left =
-        playerX + "px";
-
+        img.src = item.src;
+    });
 }
 
 
-/* ==================================================
-   スマホ操作
-================================================== */
-
-game.addEventListener(
-    "touchmove",
-    function(e) {
-
-        if (!gameRunning) return;
-
-
-        const touch =
-            e.touches[0];
-
-
-        movePlayer(
-            touch.clientX
-        );
-
-    }
-);
-
-
-/* ==================================================
-   PC操作
-================================================== */
-
-document.addEventListener(
-    "mousemove",
-    function(e) {
-
-        if (!gameRunning) return;
-
-
-        movePlayer(
-            e.clientX
-        );
-
-    }
-);
-
-
-/* ==================================================
-   松田翔生成
-================================================== */
+/* =========================
+   下痢生成
+========================= */
 
 function createMatsuda() {
 
-
-    if (!gameRunning) return;
-
-
-    const matsuda =
-        document.createElement("img");
+    if (!gameRunning) {
+        return;
+    }
 
 
     /* =========================
-       レア度決定
-    ========================== */
+       レア度抽選
 
-    const random =
-        Math.random();
+       normal 80%
+       gold   19.8%
+       rare   0.1%
+       fake   0.1%
+    ========================= */
 
+    const r = Math.random();
 
     let type;
 
-    let point;
-
-    let size;
-
-    let speed;
-
-    let imageNumber;
-
-
-    /* =========================
-       普通
-       80%
-       +10
-    ========================== */
-
-    if (random < 0.80) {
-
+    if (r < 0.80) {
 
         type = "normal";
 
-        point = 10;
-
-        size = 70;
-
-        speed =
-            2 +
-            Math.random() * 2;
-
-
-        imageNumber =
-            Math.floor(
-                Math.random() * 20
-            ) + 1;
-
-    }
-
-
-    /* =========================
-       ちょいレア
-       19.8%
-       +50
-    ========================== */
-
-    else if (random < 0.998) {
-
+    } else if (r < 0.998) {
 
         type = "gold";
 
-        point = 50;
-
-        size = 80;
-
-        speed =
-            2.5 +
-            Math.random() * 2;
-
-
-        imageNumber =
-            Math.floor(
-                Math.random() * 15
-            ) + 1;
-
-    }
-
-
-    /* =========================
-       レア
-       0.1%
-       +20,020,804
-    ========================== */
-
-    else if (random < 0.999) {
-
+    } else if (r < 0.999) {
 
         type = "rare";
 
-        point = 20020804;
+    } else {
 
-        size = 100;
-
-        speed =
-            3 +
-            Math.random() * 2;
-
-
-        imageNumber =
-            Math.floor(
-                Math.random() * 10
-            ) + 1;
-
+        type = "fake";
     }
+
+
+    /* 該当する画像だけ取得 */
+
+    const candidates =
+        imageList.filter(item => item.type === type);
+
+    const item =
+        candidates[Math.floor(Math.random() * candidates.length)];
 
 
     /* =========================
-       ハズレ
-       0.1%
-       -99,999,999
-    ========================== */
+       画像作成
+    ========================= */
 
-    else {
+    const matsuda = document.createElement("img");
 
+    matsuda.className = "matsuda";
 
-        type = "fake";
+    matsuda.src = item.src;
 
-        point = -99999999;
-
-        size = 60;
-
-        speed =
-            4 +
-            Math.random() * 2;
+    matsuda.draggable = false;
 
 
-        imageNumber =
-            Math.floor(
-                Math.random() * 10
-            ) + 1;
+    /* サイズ */
 
-    }
-
-
-    /* ==================================================
-       画像決定
-    ================================================== */
-
-    const number =
-        String(imageNumber)
-        .padStart(2, "0");
-
-
-    if (type === "normal") {
-
-        matsuda.src =
-            "normal" +
-            number +
-            ".png";
-
-    }
-
-
-    else if (type === "gold") {
-
-        matsuda.src =
-            "gold" +
-            number +
-            ".png";
-
-    }
-
-
-    else if (type === "rare") {
-
-        matsuda.src =
-            "rare" +
-            number +
-            ".png";
-
-    }
-
-
-    else {
-
-        matsuda.src =
-            "fake" +
-            number +
-            ".png";
-
-    }
-
-
-    /* ==================================================
-       基本設定
-    ================================================== */
-
-    matsuda.classList.add(
-        "matsuda"
-    );
-
-
-    matsuda.style.width =
-        size + "px";
-
-
-    matsuda.style.height =
-        size + "px";
-
-
-    /* ==================================================
-       レア度ごとの見た目
-    ================================================== */
+    let size = 80;
 
     if (type === "gold") {
-
-        matsuda.style.filter =
-            "sepia(1) saturate(5) brightness(1.3)";
-
+        size = 85;
     }
-
 
     if (type === "rare") {
-
-        matsuda.style.animation =
-            "rainbow 0.5s linear infinite";
-
+        size = 100;
     }
-
 
     if (type === "fake") {
-
-        matsuda.style.filter =
-            "grayscale(1) brightness(0.5)";
-
+        size = 80;
     }
 
+    matsuda.style.width = size + "px";
 
-    /* ==================================================
-       出現位置
-    ================================================== */
+
+    /* 横位置 */
+
+    const maxX =
+        game.clientWidth - size;
 
     const x =
-        Math.random() *
-        (window.innerWidth - size);
+        Math.random() * maxX;
+
+    matsuda.style.left = x + "px";
 
 
-    let y =
-        -size;
+    /* =========================
+       落下速度
+    ========================= */
+
+    let speed;
+
+    const speed = 4;
 
 
-    matsuda.style.left =
-        x + "px";
+    matsuda.style.top = "-120px";
+
+    game.appendChild(matsuda);
 
 
-    matsuda.style.top =
-        y + "px";
+    /* =========================
+       落下処理
+    ========================= */
 
+    let y = -120;
 
-    game.appendChild(
-        matsuda
-    );
-
-
-    /* ==================================================
-       落下
-    ================================================== */
-
-    function fall() {
-
+    const fallTimer = setInterval(() => {
 
         if (!gameRunning) {
+
+            clearInterval(fallTimer);
 
             matsuda.remove();
 
             return;
-
         }
 
 
         y += speed;
 
-
-        matsuda.style.top =
-            y + "px";
+        matsuda.style.top = y + "px";
 
 
         /* =========================
-           キャッチ判定
-        ========================== */
+           プレイヤーとの当たり判定
+        ========================= */
 
-        const matsudaRect =
+        const mRect =
             matsuda.getBoundingClientRect();
 
-
-        const playerRect =
+        const pRect =
             player.getBoundingClientRect();
 
 
-        if (
-
-            matsudaRect.bottom >=
-            playerRect.top
-
-            &&
-
-            matsudaRect.left <
-            playerRect.right
-
-            &&
-
-            matsudaRect.right >
-            playerRect.left
-
-        ) {
+        const hit =
+            mRect.bottom >= pRect.top &&
+            mRect.top <= pRect.bottom &&
+            mRect.right >= pRect.left &&
+            mRect.left <= pRect.right;
 
 
-            /* スコア加算 */
+        if (hit) {
 
-            score += point;
+            score += item.point;
 
+            updateScore();
 
-            scoreText.textContent =
-                "SCORE: " +
-                score;
-
-
-            matsuda.remove();
-
-
-            return;
-
-        }
-
-
-        /* =========================
-           画面外
-        ========================== */
-
-        if (
-            y >
-            window.innerHeight
-        ) {
+            clearInterval(fallTimer);
 
             matsuda.remove();
 
             return;
-
         }
 
 
-        requestAnimationFrame(
-            fall
-        );
+        /* 画面外 */
 
-    }
+        if (y > game.clientHeight + 150) {
 
+            clearInterval(fallTimer);
 
-    fall();
+            matsuda.remove();
+        }
 
+    }, 16);
 }
 
 
-/* ==================================================
-   タイマー
-================================================== */
+/* =========================
+   スコア更新
+========================= */
 
-let spawnTimer;
+function updateScore() {
 
-let timeTimer;
+    scoreText.textContent =
+        `SCORE: ${score.toLocaleString()}`;
+}
 
 
-/* ==================================================
+/* =========================
+   プレイヤー操作
+========================= */
+
+function movePlayer(x) {
+
+    const width =
+        player.offsetWidth;
+
+    let newX =
+        x - width / 2;
+
+
+    const maxX =
+        game.clientWidth - width;
+
+
+    if (newX < 0) {
+        newX = 0;
+    }
+
+    if (newX > maxX) {
+        newX = maxX;
+    }
+
+
+    player.style.left =
+        newX + "px";
+
+    player.style.transform =
+        "none";
+}
+
+
+/* PC */
+
+document.addEventListener("mousemove", e => {
+
+    if (!gameRunning) {
+        return;
+    }
+
+    movePlayer(e.clientX);
+});
+
+
+/* スマホ */
+
+document.addEventListener("touchmove", e => {
+
+    if (!gameRunning) {
+        return;
+    }
+
+    if (e.touches.length === 0) {
+        return;
+    }
+
+    movePlayer(e.touches[0].clientX);
+
+}, {
+    passive: true
+});
+
+
+/* =========================
    ゲーム開始
-================================================== */
+========================= */
 
 function startGame() {
 
-
     score = 0;
 
-    time = 30;
-
-
-    scoreText.textContent =
-        "SCORE: 0";
-
-
-    timeText.textContent =
-        "TIME: 30";
-
+    timeLeft = GAME_TIME;
 
     gameRunning = true;
 
 
-    startButton.style.display =
-        "none";
+    updateScore();
+
+    timerText.textContent =
+        `TIME: ${timeLeft}`;
 
 
     gameover.style.display =
         "none";
 
 
-    /* =========================
-       松田翔出現
-    ========================== */
+    /* 既存の松田を削除 */
+
+    document.querySelectorAll(".matsuda")
+        .forEach(el => el.remove());
+
+
+    /* 生成 */
 
     spawnTimer =
         setInterval(
-            function() {
-
-                createMatsuda();
-
-            },
-            700
+            createMatsuda,
+            SPAWN_INTERVAL
         );
 
 
-    /* =========================
-       時間
-    ========================== */
+    /* タイマー */
 
-    timeTimer =
-        setInterval(
-            function() {
+    countdownTimer =
+        setInterval(() => {
 
+            timeLeft--;
 
-                time--;
-
-
-                timeText.textContent =
-                    "TIME: " +
-                    time;
+            timerText.textContent =
+                `TIME: ${timeLeft}`;
 
 
-                if (time <= 0) {
+            if (timeLeft <= 0) {
 
-                    endGame();
+                endGame();
 
-                }
+            }
 
-
-            },
-            1000
-        );
-
+        }, 1000);
 }
 
 
-/* ==================================================
+/* =========================
    ゲーム終了
-================================================== */
+========================= */
 
 function endGame() {
-
 
     gameRunning = false;
 
 
-    clearInterval(
-        spawnTimer
-    );
+    clearInterval(spawnTimer);
+    clearInterval(countdownTimer);
 
 
-    clearInterval(
-        timeTimer
-    );
+    document.querySelectorAll(".matsuda")
+        .forEach(el => el.remove());
 
 
     finalScore.textContent =
-        "SCORE: " +
-        score;
+        `SCORE: ${score.toLocaleString()}`;
 
 
     gameover.style.display =
         "block";
-
-
-    startButton.textContent =
-        "もう一度";
-
-
-    startButton.style.display =
-        "block";
-
 }
 
 
-/* ==================================================
-   STARTボタン
-================================================== */
+/* =========================
+   リスタート
+========================= */
 
-startButton.addEventListener(
-    "click",
-    startGame
-);
+restartButton.addEventListener("click", () => {
 
+    startGame();
+
+});
+
+
+/* =========================
+   開始
+========================= */
+
+preloadImages();
 
 </script>
 
 </body>
-
 </html>
