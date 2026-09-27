@@ -264,6 +264,65 @@ body {
     cursor: pointer;
 }
 
+#caughtTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#caughtImages {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+
+    max-height: 220px;
+    overflow-y: auto;
+
+    margin-bottom: 20px;
+}
+
+.caughtItem {
+    position: relative;
+    width: 80px;
+    text-align: center;
+}
+
+.caughtItem img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #111;
+}
+
+.caughtName {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 3px;
+}
+
+.caughtCount {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+
+    min-width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #111;
+    color: white;
+
+    border-radius: 50%;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
 </style>
 </head>
 
@@ -357,6 +416,12 @@ body {
     <div id="scoreComment">
         秦野凱旋！
     </div>
+    
+    <div id="caughtTitle">
+    捕まえた松田翔
+    </div>
+    
+    <div id="caughtImages"></div>
 
     <button id="restart">
         もう一回
@@ -431,6 +496,8 @@ let score = 0;
 let timeLeft = GAME_TIME;
 
 let gameRunning = false;
+
+let caughtImages = [];
 
 let spawnTimer = null;
 
@@ -763,23 +830,20 @@ function createMatsuda() {
 
             if (hit) {
 
-                score +=
-                    item.point;
-
-
+                score += item.point;
+            
+                caughtImages.push({
+                    src: item.src,
+                    type: item.type
+                });
+            
                 updateScore();
-
-
-                clearInterval(
-                    fallTimer
-                );
-
-
+            
+                clearInterval(fallTimer);
+            
                 matsuda.remove();
-
-
+            
                 return;
-
             }
 
 
@@ -927,6 +991,8 @@ function startGame() {
 
     timeLeft =
         GAME_TIME;
+        
+    caughtImages = [];
 
     gameRunning =
         true;
@@ -1055,6 +1121,98 @@ else {
     scoreComment.textContent = "畦地健誠かと思ったぜ";
 
 }
+
+const caughtImagesArea =
+    document.getElementById("caughtImages");
+
+caughtImagesArea.innerHTML = "";
+
+
+/* 同じ画像をまとめる */
+
+const collection = {};
+
+caughtImages.forEach(item => {
+
+    if (!collection[item.src]) {
+
+        collection[item.src] = {
+            src: item.src,
+            type: item.type,
+            count: 0
+        };
+
+    }
+
+    collection[item.src].count++;
+
+});
+
+
+/* リザルト表示 */
+
+Object.values(collection).forEach(item => {
+
+    const wrapper =
+        document.createElement("div");
+
+    wrapper.className = "caughtItem";
+
+
+    const img =
+        document.createElement("img");
+
+    img.src = item.src;
+
+
+    const count =
+        document.createElement("div");
+
+    count.className = "caughtCount";
+
+    count.textContent =
+        `×${item.count}`;
+
+
+    const name =
+        document.createElement("div");
+
+    name.className = "caughtName";
+
+
+    /* レア度 */
+
+    if (item.type === "normal") {
+
+        name.textContent = "普通";
+
+    }
+    else if (item.type === "gold") {
+
+        name.textContent = "ちょっと集まりにくい";
+
+    }
+    else if (item.type === "rare") {
+
+        name.textContent = "激レアこんなものに運使って可哀想";
+
+    }
+    else if (item.type === "fake") {
+
+        name.textContent = "点数クソマイナスだけど激レアと同じ確率";
+
+    }
+
+
+    wrapper.appendChild(img);
+
+    wrapper.appendChild(count);
+
+    wrapper.appendChild(name);
+
+    caughtImagesArea.appendChild(wrapper);
+
+});
 
 
     gameover.style.display =
