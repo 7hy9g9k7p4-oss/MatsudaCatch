@@ -102,12 +102,47 @@ body {
     line-height: 1.7;
 }
 
+
+/* =========================
+   ローディング
+========================= */
+
 .loadingMessage {
     margin-bottom: 15px;
 
     font-size: 16px;
     font-weight: bold;
 }
+
+#loadingText {
+    margin-bottom: 8px;
+}
+
+#loadingBar {
+    width: 100%;
+    height: 18px;
+
+    background: #ddd;
+
+    border: 2px solid #111;
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+#loadingProgress {
+    width: 0%;
+    height: 100%;
+
+    background: #111;
+
+    transition: width 0.2s ease;
+}
+
+
+/* =========================
+   スタートボタン
+========================= */
 
 #startButton {
     width: 100%;
@@ -365,7 +400,15 @@ body {
                 id="loadingMessage"
                 class="loadingMessage"
             >
-                準備中...
+
+                <div id="loadingText">
+                    読み込み中 0%
+                </div>
+
+                <div id="loadingBar">
+                    <div id="loadingProgress"></div>
+                </div>
+
             </div>
 
 
@@ -404,27 +447,27 @@ body {
 
     <div id="gameover">
 
-    <h1>
-        SCORE
-    </h1>
+        <h1>
+            SCORE
+        </h1>
 
-    <div id="finalScore">
-        0
-    </div>
+        <div id="finalScore">
+            0
+        </div>
 
-    <div id="scoreComment">
-        秦野凱旋！
-    </div>
-    
-    <div id="caughtTitle">
-    捕まえた松田翔
-    </div>
-    
-    <div id="caughtImages"></div>
+        <div id="scoreComment">
+            秦野凱旋！
+        </div>
+        
+        <div id="caughtTitle">
+            捕まえた松田翔
+        </div>
+        
+        <div id="caughtImages"></div>
 
-    <button id="restart">
-        もう一回
-    </button>
+        <button id="restart">
+            もう一回
+        </button>
 
     </div>
 
@@ -484,6 +527,12 @@ const startButton =
 
 const loadingMessage =
     document.getElementById("loadingMessage");
+
+const loadingText =
+    document.getElementById("loadingText");
+
+const loadingProgress =
+    document.getElementById("loadingProgress");
 
 
 /* =========================
@@ -616,7 +665,7 @@ function preloadImages() {
 
             loaded++;
 
-            checkLoadingComplete();
+            updateLoading();
 
         };
 
@@ -625,7 +674,7 @@ function preloadImages() {
 
             loaded++;
 
-            checkLoadingComplete();
+            updateLoading();
 
         };
 
@@ -635,14 +684,34 @@ function preloadImages() {
     });
 
 
-    function checkLoadingComplete() {
+    function updateLoading() {
+
+        const percent =
+            Math.floor(
+                (loaded / total) * 100
+            );
+
+
+        loadingText.textContent =
+            `読み込み中 ${percent}%`;
+
+
+        loadingProgress.style.width =
+            `${percent}%`;
+
 
         if (loaded >= total) {
 
-            loadingMessage.textContent =
+            loadingText.textContent =
                 "準備完了！";
 
-            startButton.disabled = false;
+
+            loadingProgress.style.width =
+                "100%";
+
+
+            startButton.disabled =
+                false;
 
         }
 
@@ -814,12 +883,27 @@ function createMatsuda() {
 
             const mRect = matsuda.getBoundingClientRect();
             const pRect = player.getBoundingClientRect();
-            
-            const hit =
+
+            const matsudaCenter =
+                mRect.left + mRect.width / 2;
+
+            const catcherLeft =
+                pRect.left + pRect.width * 0.25;
+
+            const catcherRight =
+                pRect.right - pRect.width * 0.25;
+
+            const verticalHit =
                 mRect.bottom >= pRect.top &&
-                mRect.bottom <= pRect.top + 25 &&
-                mRect.right >= pRect.left &&
-                mRect.left <= pRect.right;
+                mRect.bottom <= pRect.top + 15;
+
+            const horizontalHit =
+                matsudaCenter >= catcherLeft &&
+                matsudaCenter <= catcherRight;
+
+            const hit =
+                verticalHit &&
+                horizontalHit;
 
 
             if (hit) {
@@ -1076,137 +1160,138 @@ function endGame() {
 
 
     finalScore.textContent =
-    score.toLocaleString();
+        score.toLocaleString();
 
 
-if (score < 0) {
+    if (score < 0) {
 
-    finalScore.style.color = "blue";
-    scoreComment.textContent = "これじゃ来世もTPRに落ちるじゃねぇか";
-
-}
-else if (score < 1000) {
-
-    finalScore.style.color = "green";
-    scoreComment.textContent = "まぁこんなもんだろ";
-
-}
-else if (score < 10000) {
-
-    finalScore.style.color = "green";
-    scoreComment.textContent = "10月までは耐久できたようだな";
-
-}
-else if (score < 1000000) {
-
-    finalScore.style.color = "orange";
-    scoreComment.textContent = "絶対パワーナップしてるやん";
-
-}
-else if (score < 20020804) {
-
-    finalScore.style.color = "red";
-    scoreComment.textContent = "マイクロスリープした？";
-
-}
-else {
-
-    finalScore.style.color = "purple";
-    scoreComment.textContent = "畦地健誠かと思ったぜ";
-
-}
-
-const caughtImagesArea =
-    document.getElementById("caughtImages");
-
-caughtImagesArea.innerHTML = "";
-
-
-/* 同じ画像をまとめる */
-
-const collection = {};
-
-caughtImages.forEach(item => {
-
-    if (!collection[item.src]) {
-
-        collection[item.src] = {
-            src: item.src,
-            type: item.type,
-            count: 0
-        };
+        finalScore.style.color = "blue";
+        scoreComment.textContent = "これじゃ来世もTPRに落ちるじゃねぇか";
 
     }
+    else if (score < 1000) {
 
-    collection[item.src].count++;
-
-});
-
-
-/* リザルト表示 */
-
-Object.values(collection).forEach(item => {
-
-    const wrapper =
-        document.createElement("div");
-
-    wrapper.className = "caughtItem";
-
-
-    const img =
-        document.createElement("img");
-
-    img.src = item.src;
-
-
-    const count =
-        document.createElement("div");
-
-    count.className = "caughtCount";
-
-    count.textContent =
-        `×${item.count}`;
-
-
-    const name =
-        document.createElement("div");
-
-    name.className = "caughtName";
-
-
-    /* レア度 */
-
-    if (item.type === "normal") {
-
-        name.textContent = "普通";
+        finalScore.style.color = "green";
+        scoreComment.textContent = "まぁこんなもんだろ";
 
     }
-    else if (item.type === "gold") {
+    else if (score < 10000) {
 
-        name.textContent = "ちょっと集まりにくい";
-
-    }
-    else if (item.type === "rare") {
-
-        name.textContent = "激レアこんなものに運使って可哀想";
+        finalScore.style.color = "green";
+        scoreComment.textContent = "10月までは耐久できたようだな";
 
     }
-    else if (item.type === "fake") {
+    else if (score < 1000000) {
 
-        name.textContent = "点数クソマイナスだけど激レアと同じ確率";
+        finalScore.style.color = "orange";
+        scoreComment.textContent = "絶対パワーナップしてるやん";
+
+    }
+    else if (score < 20020804) {
+
+        finalScore.style.color = "red";
+        scoreComment.textContent = "マイクロスリープした？";
+
+    }
+    else {
+
+        finalScore.style.color = "purple";
+        scoreComment.textContent = "畦地健誠かと思ったぜ";
 
     }
 
 
-    wrapper.appendChild(img);
+    const caughtImagesArea =
+        document.getElementById("caughtImages");
 
-    wrapper.appendChild(count);
+    caughtImagesArea.innerHTML = "";
 
-    wrapper.appendChild(name);
 
-    caughtImagesArea.appendChild(wrapper);
+    /* 同じ画像をまとめる */
 
-});
+    const collection = {};
+
+    caughtImages.forEach(item => {
+
+        if (!collection[item.src]) {
+
+            collection[item.src] = {
+                src: item.src,
+                type: item.type,
+                count: 0
+            };
+
+        }
+
+        collection[item.src].count++;
+
+    });
+
+
+    /* リザルト表示 */
+
+    Object.values(collection).forEach(item => {
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className = "caughtItem";
+
+
+        const img =
+            document.createElement("img");
+
+        img.src = item.src;
+
+
+        const count =
+            document.createElement("div");
+
+        count.className = "caughtCount";
+
+        count.textContent =
+            `×${item.count}`;
+
+
+        const name =
+            document.createElement("div");
+
+        name.className = "caughtName";
+
+
+        /* レア度 */
+
+        if (item.type === "normal") {
+
+            name.textContent = "普通";
+
+        }
+        else if (item.type === "gold") {
+
+            name.textContent = "ちょっと集まりにくい";
+
+        }
+        else if (item.type === "rare") {
+
+            name.textContent = "激レアこんなものに運使って可哀想";
+
+        }
+        else if (item.type === "fake") {
+
+            name.textContent = "点数クソマイナスだけど激レアと同じ確率";
+
+        }
+
+
+        wrapper.appendChild(img);
+
+        wrapper.appendChild(count);
+
+        wrapper.appendChild(name);
+
+        caughtImagesArea.appendChild(wrapper);
+
+    });
 
 
     gameover.style.display =
