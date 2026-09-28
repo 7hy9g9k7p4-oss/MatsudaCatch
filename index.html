@@ -814,17 +814,18 @@ function createMatsuda() {
 
             const mRect =
                 matsuda.getBoundingClientRect();
-
-
+            
             const pRect =
                 player.getBoundingClientRect();
-
-
+            
+            const marginX = 15;
+            const marginY = 10;
+            
             const hit =
-                mRect.bottom >= pRect.top &&
-                mRect.top <= pRect.bottom &&
-                mRect.right >= pRect.left &&
-                mRect.left <= pRect.right;
+                mRect.bottom - marginY >= pRect.top &&
+                mRect.top + marginY <= pRect.bottom &&
+                mRect.right - marginX >= pRect.left &&
+                mRect.left + marginX <= pRect.right;
 
 
             if (hit) {
