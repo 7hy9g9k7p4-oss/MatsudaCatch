@@ -812,20 +812,14 @@ function createMatsuda() {
                当たり判定
             ========================= */
 
-            const mRect =
-                matsuda.getBoundingClientRect();
-            
-            const pRect =
-                player.getBoundingClientRect();
-            
-            const marginX = 15;
-            const marginY = 10;
+            const mRect = matsuda.getBoundingClientRect();
+            const pRect = player.getBoundingClientRect();
             
             const hit =
-                mRect.bottom - marginY >= pRect.top &&
-                mRect.top + marginY <= pRect.bottom &&
-                mRect.right - marginX >= pRect.left &&
-                mRect.left + marginX <= pRect.right;
+                mRect.bottom >= pRect.top &&
+                mRect.bottom <= pRect.top + 25 &&
+                mRect.right >= pRect.left &&
+                mRect.left <= pRect.right;
 
 
             if (hit) {
