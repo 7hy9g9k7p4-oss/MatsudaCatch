@@ -3,17 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <title>下痢キャッチ</title>
 
 <style>
+* { box-sizing: border-box; }
 
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
+html, body {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -25,10 +20,7 @@ body {
     background: #111;
 }
 
-body {
-    position: fixed;
-    inset: 0;
-}
+body { position: fixed; inset: 0; }
 
 #game {
     position: relative;
@@ -39,22 +31,15 @@ body {
     background: linear-gradient(#87ceeb, #eaf9ff);
 }
 
-
-/* =========================
-   スタート画面
-========================= */
-
+/* スタート画面 */
 #startScreen {
     position: absolute;
     inset: 0;
     z-index: 1000;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     padding: 20px;
-
     background: linear-gradient(#87ceeb, #eaf9ff);
 }
 
@@ -62,102 +47,70 @@ body {
     width: min(90%, 420px);
     max-height: 90%;
     overflow-y: auto;
-
     padding: 30px 25px;
-
     text-align: center;
-
     background: rgba(255,255,255,0.95);
-
     border: 3px solid #111;
     border-radius: 20px;
 }
 
 .startTitle {
     margin: 0 0 20px;
-
     font-size: 42px;
     font-weight: bold;
 }
 
 .description {
     margin-bottom: 20px;
-
     font-size: 18px;
     line-height: 1.6;
 }
 
 .rules {
     margin: 0 auto 25px;
-
     padding: 15px;
-
     text-align: left;
-
     background: #f2f2f2;
-
     border-radius: 12px;
-
     font-size: 16px;
     line-height: 1.7;
 }
 
-
-/* =========================
-   ローディング
-========================= */
-
+/* ローディング */
 .loadingMessage {
     margin-bottom: 15px;
-
     font-size: 16px;
     font-weight: bold;
 }
 
-#loadingText {
-    margin-bottom: 8px;
-}
+#loadingText { margin-bottom: 8px; }
 
 #loadingBar {
     width: 100%;
     height: 18px;
-
     background: #ddd;
-
     border: 2px solid #111;
     border-radius: 10px;
-
     overflow: hidden;
 }
 
 #loadingProgress {
     width: 0%;
     height: 100%;
-
     background: #111;
-
     transition: width 0.2s ease;
 }
 
-
-/* =========================
-   スタートボタン
-========================= */
-
+/* ボタン */
 #startButton {
     width: 100%;
-
     padding: 15px;
-
     font-size: 24px;
     font-weight: bold;
-
     border: none;
     border-radius: 12px;
-
     background: #222;
     color: white;
-
     cursor: pointer;
 }
 
@@ -166,159 +119,121 @@ body {
     cursor: not-allowed;
 }
 
-
-/* =========================
-   スコア・タイマー
-========================= */
-
-#score {
+/* スコア・タイマー */
+#score, #timer {
     position: absolute;
     top: 15px;
-    left: 15px;
-
     z-index: 100;
-
     font-size: 24px;
     font-weight: bold;
-
     color: #111;
 }
 
-#timer {
-    position: absolute;
-    top: 15px;
-    right: 15px;
+#score { left: 15px; }
+#timer { right: 15px; }
 
-    z-index: 100;
-
-    font-size: 24px;
-    font-weight: bold;
-
-    color: #111;
-}
-
-
-/* =========================
-   キャッチャー
-========================= */
-
+/* キャッチャー */
 #player {
     position: absolute;
-
     bottom: 50px;
     left: 50%;
-
     transform: translateX(-50%);
-
     width: 100px;
     height: 25px;
-
     background: white;
-
     border-radius: 10px;
     border: 3px solid #111;
-
     z-index: 50;
 }
 
-
-/* =========================
-   下痢
-========================= */
-
+/* 落下画像 */
 .matsuda {
     position: absolute;
-
     top: -150px;
-
     width: 80px;
     height: auto;
-
     user-select: none;
     pointer-events: none;
-
     z-index: 20;
 }
 
-
-/* =========================
-   ゲームオーバー
-========================= */
-
+/* リザルト */
 #gameover {
     display: none;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
     z-index: 200;
-
-    width: min(90%, 400px);
-    max-height: 90%;
-
+    width: min(94%, 440px);
+    max-height: 94%;
     overflow-y: auto;
-
+    overscroll-behavior: contain;
+    touch-action: pan-y;
     text-align: center;
-
-    background: rgba(255,255,255,0.95);
-
-    padding: 25px;
-
+    background: rgba(255,255,255,0.97);
+    padding: 20px;
     border-radius: 20px;
     border: 3px solid #111;
 }
 
 #gameover h1 {
-    margin: 0 0 15px;
+    margin: 0 0 10px;
     font-size: 24px;
 }
 
 #finalScore {
-    font-size: 48px;
+    font-size: 42px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+    margin-bottom: 8px;
+}
+
+#bonusText {
+    font-size: 17px;
+    font-weight: bold;
+    color: #b36b00;
+    margin-bottom: 10px;
+}
+
+#scoreComment {
+    font-size: 20px;
     font-weight: bold;
     margin-bottom: 15px;
 }
 
-#scoreComment {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-#restart {
-    padding: 12px 25px;
-
-    font-size: 20px;
-    font-weight: bold;
-
-    border: none;
+.resultStats {
+    margin: 10px 0;
+    padding: 10px;
+    background: #f1f1f1;
     border-radius: 10px;
-
-    cursor: pointer;
-}
-
-#caughtTitle {
-    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 10px;
+    line-height: 1.7;
 }
 
-#caughtImages {
+.resultTitle {
+    font-size: 17px;
+    font-weight: bold;
+    margin: 15px 0 8px;
+}
+
+.resultImages {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
-
-    max-height: 180px;
+    max-height: 150px;
     overflow-y: auto;
-
-    margin-bottom: 15px;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    margin-bottom: 12px;
+    padding: 4px;
 }
 
 .caughtItem {
     position: relative;
     width: 80px;
+    flex: 0 0 80px;
     text-align: center;
 }
 
@@ -331,152 +246,107 @@ body {
 }
 
 .caughtName {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     margin-top: 3px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
 }
 
 .caughtCount {
     position: absolute;
     top: -5px;
     right: -5px;
-
     min-width: 25px;
     height: 25px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     background: #111;
     color: white;
-
     border-radius: 50%;
-
     font-size: 12px;
     font-weight: bold;
 }
 
+.emptyResult {
+    font-size: 13px;
+    color: #666;
+    padding: 8px;
+}
+
+#restart {
+    width: 100%;
+    padding: 13px 25px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #222;
+    color: white;
+    margin-top: 8px;
+}
 </style>
 </head>
 
-
 <body>
-
 <div id="game">
 
-
-    <!-- =========================
-         スタート画面
-    ========================== -->
-
     <div id="startScreen">
-
         <div class="startBox">
-
-            <h1 class="startTitle">
-                下痢キャッチ
-            </h1>
-
+            <h1 class="startTitle">下痢キャッチ</h1>
 
             <div class="description">
-
                 落ちてくる下痢を救え!<br>
                 落ちるのは公務員試験だけで十分だ!
-
             </div>
-
 
             <div class="rules">
-
                 <strong>ルール</strong><br>
-
-                ・下痢が落ちる前に台座を動かして回収しろ!レアな下痢は点数が高いしハズレっぽい下痢は減点だ！
-
+                ・下痢が落ちる前に台座を動かして回収しろ！<br>
+                ・レアな下痢は高得点、ハズレっぽい下痢は大幅減点！<br>
+                ・全部回収できればボーナス＋10,000点！
             </div>
 
-
-            <div
-                id="loadingMessage"
-                class="loadingMessage"
-            >
-
-                <div id="loadingText">
-                    読み込み中 0%
-                </div>
-
+            <div id="loadingMessage" class="loadingMessage">
+                <div id="loadingText">読み込み中 0%</div>
                 <div id="loadingBar">
                     <div id="loadingProgress"></div>
                 </div>
-
             </div>
 
-
-            <button
-                id="startButton"
-                disabled
-            >
-                はじめる
-            </button>
-
+            <button id="startButton" disabled>はじめる</button>
         </div>
-
     </div>
 
-
-    <!-- =========================
-         ゲーム本体
-    ========================== -->
-
-    <div id="score">
-        SCORE: 0
-    </div>
-
-
-    <div id="timer">
-        TIME: 30
-    </div>
-
-
+    <div id="score">SCORE: 0</div>
+    <div id="timer">TIME: 30</div>
     <div id="player"></div>
 
-
-    <!-- =========================
-         ゲームオーバー
-    ========================== -->
-
     <div id="gameover">
+        <h1>RESULT</h1>
+        <div id="finalScore">0</div>
+        <div id="bonusText"></div>
+        <div id="scoreComment">まぁこんなもんだろ</div>
 
-        <h1>
-            SCORE
-        </h1>
-
-        <div id="finalScore">
-            0
+        <div class="resultStats">
+            <div id="caughtStats">回収：0個</div>
+            <div id="missedStats">逃した：0個</div>
         </div>
 
-        <div id="scoreComment">
-            秦野凱旋！
-        </div>
-        
-        <div id="caughtTitle">
-            捕まえた松田翔
-        </div>
-        
-        <div id="caughtImages"></div>
+        <div class="resultTitle">捕まえた下痢</div>
+        <div id="caughtImages" class="resultImages"></div>
 
-        <button id="restart">
-            もう一回
-        </button>
+        <div class="resultTitle">逃した下痢</div>
+        <div id="missedImages" class="resultImages"></div>
 
+        <button id="restart">もう一回</button>
     </div>
 
 </div>
 
-
 <script>
-
-
 /* =========================
    設定
 ========================= */
@@ -487,70 +357,51 @@ const RARE_COUNT = 10;
 const FAKE_COUNT = 10;
 
 const GAME_TIME = 30;
-
 const SPAWN_INTERVAL = 700;
-
+const ALL_CAUGHT_BONUS = 10000;
 
 /* =========================
    DOM
 ========================= */
 
-const game =
-    document.getElementById("game");
-
-const player =
-    document.getElementById("player");
-
-const scoreText =
-    document.getElementById("score");
-
-const timerText =
-    document.getElementById("timer");
-
-const gameover =
-    document.getElementById("gameover");
-
-const finalScore =
-    document.getElementById("finalScore");
-    
-const scoreComment =
-    document.getElementById("scoreComment");
-
-const restartButton =
-    document.getElementById("restart");
-
-const startScreen =
-    document.getElementById("startScreen");
-
-const startButton =
-    document.getElementById("startButton");
-
-const loadingMessage =
-    document.getElementById("loadingMessage");
-
-const loadingText =
-    document.getElementById("loadingText");
-
-const loadingProgress =
-    document.getElementById("loadingProgress");
-
+const game = document.getElementById("game");
+const player = document.getElementById("player");
+const scoreText = document.getElementById("score");
+const timerText = document.getElementById("timer");
+const gameover = document.getElementById("gameover");
+const finalScore = document.getElementById("finalScore");
+const bonusText = document.getElementById("bonusText");
+const scoreComment = document.getElementById("scoreComment");
+const restartButton = document.getElementById("restart");
+const startScreen = document.getElementById("startScreen");
+const startButton = document.getElementById("startButton");
+const loadingText = document.getElementById("loadingText");
+const loadingProgress = document.getElementById("loadingProgress");
+const caughtImagesArea = document.getElementById("caughtImages");
+const missedImagesArea = document.getElementById("missedImages");
+const caughtStats = document.getElementById("caughtStats");
+const missedStats = document.getElementById("missedStats");
 
 /* =========================
    ゲーム状態
 ========================= */
 
 let score = 0;
-
 let timeLeft = GAME_TIME;
-
 let gameRunning = false;
 
 let caughtImages = [];
+let missedImages = [];
 
 let spawnTimer = null;
-
 let countdownTimer = null;
 
+let spawnedCount = 0;
+let audioContext = null;
+let musicTimer = null;
+let musicStep = 0;
+
+const activeMatsuda = new Set();
 
 /* =========================
    画像一覧
@@ -558,793 +409,534 @@ let countdownTimer = null;
 
 const imageList = [];
 
-
-/* 普通 */
-
-for (
-    let i = 1;
-    i <= NORMAL_COUNT;
-    i++
-) {
-
+for (let i = 1; i <= NORMAL_COUNT; i++) {
     imageList.push({
-
         type: "normal",
-
         src: `normal${i}.jpeg`,
-
         point: 10
-
     });
-
 }
 
-
-/* ちょいレア */
-
-for (
-    let i = 1;
-    i <= GOLD_COUNT;
-    i++
-) {
-
+for (let i = 1; i <= GOLD_COUNT; i++) {
     imageList.push({
-
         type: "gold",
-
         src: `gold${i}.jpeg`,
-
         point: 50
-
     });
-
 }
 
-
-/* レア */
-
-for (
-    let i = 1;
-    i <= RARE_COUNT;
-    i++
-) {
-
+for (let i = 1; i <= RARE_COUNT; i++) {
     imageList.push({
-
         type: "rare",
-
         src: `rare${i}.jpeg`,
-
         point: 20020804
-
     });
-
 }
 
-
-/* ハズレ */
-
-for (
-    let i = 1;
-    i <= FAKE_COUNT;
-    i++
-) {
-
+for (let i = 1; i <= FAKE_COUNT; i++) {
     imageList.push({
-
         type: "fake",
-
         src: `fake${i}.jpeg`,
-
         point: -99999999
-
     });
-
 }
-
 
 /* =========================
    画像読み込み
 ========================= */
 
 function preloadImages() {
-
     let loaded = 0;
-
-    const total =
-        imageList.length;
-
+    const total = imageList.length;
 
     imageList.forEach(item => {
+        const img = new Image();
 
-        const img =
-            new Image();
-
-
-        img.onload = () => {
-
+        const finish = () => {
             loaded++;
+            const percent = Math.floor((loaded / total) * 100);
 
-            updateLoading();
+            loadingText.textContent = `読み込み中 ${percent}%`;
+            loadingProgress.style.width = `${percent}%`;
 
+            if (loaded >= total) {
+                loadingText.textContent = "準備完了！";
+                loadingProgress.style.width = "100%";
+                startButton.disabled = false;
+            }
         };
 
-
-        img.onerror = () => {
-
-            loaded++;
-
-            updateLoading();
-
-        };
-
-
+        img.onload = finish;
+        img.onerror = finish;
         img.src = item.src;
-
     });
-
-
-    function updateLoading() {
-
-        const percent =
-            Math.floor(
-                (loaded / total) * 100
-            );
-
-
-        loadingText.textContent =
-            `読み込み中 ${percent}%`;
-
-
-        loadingProgress.style.width =
-            `${percent}%`;
-
-
-        if (loaded >= total) {
-
-            loadingText.textContent =
-                "準備完了！";
-
-
-            loadingProgress.style.width =
-                "100%";
-
-
-            startButton.disabled =
-                false;
-
-        }
-
-    }
-
 }
 
+/* =========================
+   8bit風BGM
+   外部ファイル不要
+========================= */
+
+function playChiptuneNote(frequency, duration, volume = 0.035, wave = "square") {
+    if (!audioContext || audioContext.state !== "running") return;
+
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    const now = audioContext.currentTime;
+
+    oscillator.type = wave;
+    oscillator.frequency.setValueAtTime(frequency, now);
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(volume, now + 0.01);
+    gain.gain.setValueAtTime(volume, now + Math.max(0.02, duration * 0.45));
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.start(now);
+    oscillator.stop(now + duration + 0.02);
+
+    oscillator.onended = () => {
+        oscillator.disconnect();
+        gain.disconnect();
+    };
+}
+
+function startMusic() {
+    stopMusic();
+
+    try {
+        const AudioContextClass =
+            window.AudioContext || window.webkitAudioContext;
+
+        if (!AudioContextClass) return;
+
+        audioContext = new AudioContextClass();
+        audioContext.resume();
+
+        // 8bit風の短いループ
+        const melody = [
+            523, 659, 784, 659,
+            523, 659, 880, 784,
+            659, 784, 988, 784,
+            659, 523, 587, 659
+        ];
+
+        const bass = [
+            131, 131, 196, 196,
+            175, 175, 131, 131
+        ];
+
+        musicStep = 0;
+
+        musicTimer = setInterval(() => {
+            if (!gameRunning || !audioContext) return;
+
+            const note = melody[musicStep % melody.length];
+
+            playChiptuneNote(note, 0.13, 0.025, "square");
+
+            if (musicStep % 2 === 0) {
+                const bassNote = bass[
+                    Math.floor(musicStep / 2) % bass.length
+                ];
+                playChiptuneNote(bassNote, 0.19, 0.035, "triangle");
+            }
+
+            musicStep++;
+        }, 160);
+
+    } catch (error) {
+        // 音声が利用できない環境でもゲームは続行
+        stopMusic();
+    }
+}
+
+function stopMusic() {
+    if (musicTimer !== null) {
+        clearInterval(musicTimer);
+        musicTimer = null;
+    }
+
+    if (audioContext) {
+        const oldContext = audioContext;
+        audioContext = null;
+
+        oldContext.close().catch(() => {});
+    }
+}
+
+/* =========================
+   レア度表示名
+========================= */
+
+function getRarityName(type) {
+    if (type === "normal") return "普通";
+    if (type === "gold") return "ちょっと集まりにくい";
+    if (type === "rare") return "激レア・こんなものに運使って可哀想";
+    if (type === "fake") return "超減点・激レアと同じ確率";
+    return "";
+}
 
 /* =========================
    下痢生成
 ========================= */
 
 function createMatsuda() {
+    if (!gameRunning) return;
 
-    if (!gameRunning) {
-        return;
-    }
-
-
-    /* =========================
-       レア度抽選
-    ========================= */
-
-    const r =
-        Math.random();
-
-
+    const r = Math.random();
     let type;
 
-
     if (r < 0.80) {
-
         type = "normal";
-
-    }
-
-    else if (r < 0.998) {
-
+    } else if (r < 0.998) {
         type = "gold";
-
-    }
-
-    else if (r < 0.999) {
-
+    } else if (r < 0.999) {
         type = "rare";
-
-    }
-
-    else {
-
+    } else {
         type = "fake";
-
     }
 
+    const candidates = imageList.filter(item => item.type === type);
+    const item = candidates[Math.floor(Math.random() * candidates.length)];
 
-    /* =========================
-       該当画像を選択
-    ========================= */
-
-    const candidates =
-        imageList.filter(
-            item => item.type === type
-        );
-
-
-    const item =
-        candidates[
-            Math.floor(
-                Math.random()
-                * candidates.length
-            )
-        ];
-
-
-    /* =========================
-       画像作成
-    ========================= */
-
-    const matsuda =
-        document.createElement("img");
-
-
-    matsuda.className =
-        "matsuda";
-
-
-    matsuda.src =
-        item.src;
-
-
-    matsuda.draggable =
-        false;
-
-
-    matsuda.style.width =
-        "80px";
-
-
-    /* =========================
-       横位置
-    ========================= */
+    const matsuda = document.createElement("img");
+    matsuda.className = "matsuda";
+    matsuda.src = item.src;
+    matsuda.draggable = false;
+    matsuda.style.width = "80px";
 
     const size = 80;
+    const maxX = Math.max(0, game.clientWidth - size);
+    const x = Math.random() * maxX;
 
+    matsuda.style.left = x + "px";
+    matsuda.style.top = "-120px";
 
-    const maxX =
-        game.clientWidth - size;
+    game.appendChild(matsuda);
 
+    spawnedCount++;
 
-    const x =
-        Math.random() * maxX;
+    const entry = {
+        el: matsuda,
+        item: item,
+        y: -120,
+        speed: 3 + Math.random() * 3,
+        fallTimer: null,
+        resolved: false
+    };
 
+    activeMatsuda.add(entry);
 
-    matsuda.style.left =
-        x + "px";
+    entry.fallTimer = setInterval(() => {
+        if (!gameRunning || entry.resolved) {
+            clearInterval(entry.fallTimer);
+            matsuda.remove();
+            activeMatsuda.delete(entry);
+            return;
+        }
 
+        entry.y += entry.speed;
+        matsuda.style.top = entry.y + "px";
 
-    /* =========================
-       落下速度
-       全種類共通
-    ========================= */
+        const mRect = matsuda.getBoundingClientRect();
+        const pRect = player.getBoundingClientRect();
 
-    const speed = 3 + Math.random() * 3;
+        // 回収判定：キャッチャーの中央60%を有効範囲にする
+        const matsudaCenter = mRect.left + mRect.width / 2;
+        const catcherLeft = pRect.left + pRect.width * 0.20;
+        const catcherRight = pRect.right - pRect.width * 0.20;
 
+        const verticalHit =
+            mRect.bottom >= pRect.top &&
+            mRect.bottom <= pRect.top + 15;
 
-    matsuda.style.top =
-        "-120px";
+        const horizontalHit =
+            matsudaCenter >= catcherLeft &&
+            matsudaCenter <= catcherRight;
 
+        if (verticalHit && horizontalHit) {
+            entry.resolved = true;
 
-    game.appendChild(
-        matsuda
-    );
+            score += item.point;
 
+            caughtImages.push({
+                src: item.src,
+                type: item.type
+            });
 
-    let y = -120;
+            updateScore();
 
+            clearInterval(entry.fallTimer);
+            activeMatsuda.delete(entry);
+            matsuda.remove();
 
-    /* =========================
-       落下処理
-    ========================= */
+            return;
+        }
 
-    const fallTimer =
-        setInterval(() => {
+        // キャッチャーを通り過ぎたら「逃した」として記録
+        if (mRect.top > pRect.bottom) {
+            entry.resolved = true;
 
+            missedImages.push({
+                src: item.src,
+                type: item.type
+            });
 
-            if (!gameRunning) {
+            clearInterval(entry.fallTimer);
+            activeMatsuda.delete(entry);
+            matsuda.remove();
 
-                clearInterval(
-                    fallTimer
-                );
+            return;
+        }
 
-                matsuda.remove();
+        // 画面外に出た場合も記録
+        if (entry.y > game.clientHeight + 150) {
+            entry.resolved = true;
 
-                return;
+            missedImages.push({
+                src: item.src,
+                type: item.type
+            });
 
-            }
-
-
-            y += speed;
-
-
-            matsuda.style.top =
-                y + "px";
-
-
-            /* =========================
-               当たり判定
-            ========================= */
-
-            const mRect = matsuda.getBoundingClientRect();
-            const pRect = player.getBoundingClientRect();
-
-            const matsudaCenter =
-                mRect.left + mRect.width / 2;
-
-            const catcherLeft =
-                pRect.left + pRect.width * 0.25;
-
-            const catcherRight =
-                pRect.right - pRect.width * 0.25;
-
-            const verticalHit =
-                mRect.bottom >= pRect.top &&
-                mRect.bottom <= pRect.top + 15;
-
-            const horizontalHit =
-                matsudaCenter >= catcherLeft &&
-                matsudaCenter <= catcherRight;
-
-            const hit =
-                verticalHit &&
-                horizontalHit;
-
-
-            if (hit) {
-
-                score += item.point;
-            
-                caughtImages.push({
-                    src: item.src,
-                    type: item.type
-                });
-            
-                updateScore();
-            
-                clearInterval(fallTimer);
-            
-                matsuda.remove();
-            
-                return;
-            }
-
-
-            /* =========================
-               画面外
-            ========================= */
-
-            if (
-                y >
-                game.clientHeight + 150
-            ) {
-
-                clearInterval(
-                    fallTimer
-                );
-
-                matsuda.remove();
-
-            }
-
-
-        }, 16);
-
+            clearInterval(entry.fallTimer);
+            activeMatsuda.delete(entry);
+            matsuda.remove();
+        }
+    }, 16);
 }
-
 
 /* =========================
    スコア更新
 ========================= */
 
 function updateScore() {
-
-    scoreText.textContent =
-        `SCORE: ${score.toLocaleString()}`;
-
+    scoreText.textContent = `SCORE: ${score.toLocaleString()}`;
 }
-
 
 /* =========================
    プレイヤー移動
 ========================= */
 
 function movePlayer(x) {
+    const width = player.offsetWidth;
+    let newX = x - width / 2;
+    const maxX = game.clientWidth - width;
 
-    const width =
-        player.offsetWidth;
+    if (newX < 0) newX = 0;
+    if (newX > maxX) newX = maxX;
 
-
-    let newX =
-        x - width / 2;
-
-
-    const maxX =
-        game.clientWidth - width;
-
-
-    if (newX < 0) {
-
-        newX = 0;
-
-    }
-
-
-    if (newX > maxX) {
-
-        newX = maxX;
-
-    }
-
-
-    player.style.left =
-        newX + "px";
-
-
-    player.style.transform =
-        "none";
-
+    player.style.left = newX + "px";
+    player.style.transform = "none";
 }
 
+document.addEventListener("mousemove", e => {
+    if (!gameRunning) return;
+    movePlayer(e.clientX);
+});
+
+document.addEventListener("touchmove", e => {
+    if (!gameRunning || e.touches.length === 0) return;
+
+    e.preventDefault();
+    movePlayer(e.touches[0].clientX);
+}, { passive: false });
 
 /* =========================
-   PC操作
+   リザルト画像表示
 ========================= */
 
-document.addEventListener(
-    "mousemove",
-    e => {
+function renderImageResults(container, images) {
+    container.innerHTML = "";
 
-        if (!gameRunning) {
-            return;
+    const collection = {};
+
+    images.forEach(item => {
+        if (!collection[item.src]) {
+            collection[item.src] = {
+                src: item.src,
+                type: item.type,
+                count: 0
+            };
         }
 
+        collection[item.src].count++;
+    });
 
-        movePlayer(
-            e.clientX
-        );
+    const entries = Object.values(collection);
 
+    if (entries.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "emptyResult";
+        empty.textContent = "なし！";
+        container.appendChild(empty);
+        return;
     }
-);
 
+    entries.forEach(item => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "caughtItem";
 
-/* =========================
-   スマホ操作
-========================= */
+        const img = document.createElement("img");
+        img.src = item.src;
+        img.alt = getRarityName(item.type);
+        img.loading = "eager";
 
-document.addEventListener(
-    "touchmove",
-    e => {
+        const count = document.createElement("div");
+        count.className = "caughtCount";
+        count.textContent = `×${item.count}`;
 
-        if (!gameRunning) {
-            return;
-        }
+        const name = document.createElement("div");
+        name.className = "caughtName";
+        name.textContent = getRarityName(item.type);
 
+        wrapper.appendChild(img);
+        wrapper.appendChild(count);
+        wrapper.appendChild(name);
 
-        if (
-            e.touches.length === 0
-        ) {
-
-            return;
-
-        }
-
-
-        e.preventDefault();
-
-
-        movePlayer(
-            e.touches[0].clientX
-        );
-
-    },
-    {
-        passive: false
-    }
-);
-
+        container.appendChild(wrapper);
+    });
+}
 
 /* =========================
    ゲーム開始
 ========================= */
 
 function startGame() {
+    clearInterval(spawnTimer);
+    clearInterval(countdownTimer);
+
+    // 念のため前回の落下処理をすべて終了
+    activeMatsuda.forEach(entry => {
+        clearInterval(entry.fallTimer);
+        entry.el.remove();
+    });
+    activeMatsuda.clear();
+
+    document.querySelectorAll(".matsuda").forEach(el => el.remove());
 
     score = 0;
-
-    timeLeft =
-        GAME_TIME;
-        
+    timeLeft = GAME_TIME;
     caughtImages = [];
-
-    gameRunning =
-        true;
-
+    missedImages = [];
+    spawnedCount = 0;
+    gameRunning = true;
 
     updateScore();
+    timerText.textContent = `TIME: ${timeLeft}`;
 
+    gameover.style.display = "none";
+    startScreen.style.display = "none";
 
-    timerText.textContent =
-        `TIME: ${timeLeft}`;
+    startMusic();
 
+    spawnTimer = setInterval(createMatsuda, SPAWN_INTERVAL);
 
-    gameover.style.display =
-        "none";
+    countdownTimer = setInterval(() => {
+        timeLeft--;
+        timerText.textContent = `TIME: ${timeLeft}`;
 
-
-    startScreen.style.display =
-        "none";
-
-
-    /* 既存の下痢を削除 */
-
-    document
-        .querySelectorAll(".matsuda")
-        .forEach(el => el.remove());
-
-
-    /* 生成開始 */
-
-    spawnTimer =
-        setInterval(
-            createMatsuda,
-            SPAWN_INTERVAL
-        );
-
-
-    /* カウントダウン */
-
-    countdownTimer =
-        setInterval(() => {
-
-
-            timeLeft--;
-
-
-            timerText.textContent =
-                `TIME: ${timeLeft}`;
-
-
-            if (
-                timeLeft <= 0
-            ) {
-
-                endGame();
-
-            }
-
-
-        }, 1000);
-
+        if (timeLeft <= 0) {
+            endGame();
+        }
+    }, 1000);
 }
-
 
 /* =========================
    ゲーム終了
 ========================= */
 
 function endGame() {
+    if (!gameRunning) return;
 
-    gameRunning =
-        false;
+    gameRunning = false;
 
+    clearInterval(spawnTimer);
+    clearInterval(countdownTimer);
 
-    clearInterval(
-        spawnTimer
-    );
+    stopMusic();
 
+    // 終了時にまだ落下中の下痢も「逃した」として記録
+    activeMatsuda.forEach(entry => {
+        if (!entry.resolved) {
+            entry.resolved = true;
 
-    clearInterval(
-        countdownTimer
-    );
+            missedImages.push({
+                src: entry.item.src,
+                type: entry.item.type
+            });
+        }
 
+        clearInterval(entry.fallTimer);
+        entry.el.remove();
+    });
 
-    document
-        .querySelectorAll(".matsuda")
-        .forEach(el => el.remove());
+    activeMatsuda.clear();
 
+    document.querySelectorAll(".matsuda").forEach(el => el.remove());
 
-    finalScore.textContent =
-        score.toLocaleString();
+    // 1個以上出現し、逃した数がゼロなら全回収
+    const allCaught =
+        spawnedCount > 0 && missedImages.length === 0;
 
+    const bonus = allCaught ? ALL_CAUGHT_BONUS : 0;
+    const totalScore = score + bonus;
 
-    if (score < 0) {
+    finalScore.textContent = totalScore.toLocaleString();
+    bonusText.textContent = allCaught
+        ? "全回収ボーナス +" + ALL_CAUGHT_BONUS.toLocaleString() + "点！"
+        : "全回収ボーナス 0点";
 
+    caughtStats.textContent = `回収：${caughtImages.length}個`;
+    missedStats.textContent = `逃した：${missedImages.length}個`;
+
+    if (totalScore < 0) {
         finalScore.style.color = "blue";
         scoreComment.textContent = "これじゃ来世もTPRに落ちるじゃねぇか";
-
-    }
-    else if (score < 1000) {
-
+    } else if (totalScore < 1000) {
         finalScore.style.color = "green";
         scoreComment.textContent = "まぁこんなもんだろ";
-
-    }
-    else if (score < 10000) {
-
+    } else if (totalScore < 10000) {
         finalScore.style.color = "green";
         scoreComment.textContent = "10月までは耐久できたようだな";
-
-    }
-    else if (score < 1000000) {
-
+    } else if (totalScore < 1000000) {
         finalScore.style.color = "orange";
         scoreComment.textContent = "絶対パワーナップしてるやん";
-
-    }
-    else if (score < 20020804) {
-
+    } else if (totalScore < 20020804) {
         finalScore.style.color = "red";
         scoreComment.textContent = "マイクロスリープした？";
-
-    }
-    else {
-
+    } else {
         finalScore.style.color = "purple";
         scoreComment.textContent = "畦地健誠かと思ったぜ";
-
     }
 
+    renderImageResults(caughtImagesArea, caughtImages);
+    renderImageResults(missedImagesArea, missedImages);
 
-    const caughtImagesArea =
-        document.getElementById("caughtImages");
-
-    caughtImagesArea.innerHTML = "";
-
-
-    /* 同じ画像をまとめる */
-
-    const collection = {};
-
-    caughtImages.forEach(item => {
-
-        if (!collection[item.src]) {
-
-            collection[item.src] = {
-                src: item.src,
-                type: item.type,
-                count: 0
-            };
-
-        }
-
-        collection[item.src].count++;
-
-    });
-
-
-    /* リザルト表示 */
-
-    Object.values(collection).forEach(item => {
-
-        const wrapper =
-            document.createElement("div");
-
-        wrapper.className = "caughtItem";
-
-
-        const img =
-            document.createElement("img");
-
-        img.src = item.src;
-
-
-        const count =
-            document.createElement("div");
-
-        count.className = "caughtCount";
-
-        count.textContent =
-            `×${item.count}`;
-
-
-        const name =
-            document.createElement("div");
-
-        name.className = "caughtName";
-
-
-        /* レア度 */
-
-        if (item.type === "normal") {
-
-            name.textContent = "普通";
-
-        }
-        else if (item.type === "gold") {
-
-            name.textContent = "ちょっと集まりにくい";
-
-        }
-        else if (item.type === "rare") {
-
-            name.textContent = "激レアこんなものに運使って可哀想";
-
-        }
-        else if (item.type === "fake") {
-
-            name.textContent = "点数クソマイナスだけど激レアと同じ確率";
-
-        }
-
-
-        wrapper.appendChild(img);
-
-        wrapper.appendChild(count);
-
-        wrapper.appendChild(name);
-
-        caughtImagesArea.appendChild(wrapper);
-
-    });
-
-
-    gameover.style.display =
-        "block";
-
+    gameover.style.display = "block";
 }
 
-
 /* =========================
-   はじめるボタン
+   ボタン
 ========================= */
 
-startButton.addEventListener(
-    "click",
-    () => {
+startButton.addEventListener("click", () => {
+    if (startButton.disabled) return;
+    startGame();
+});
 
-        if (
-            startButton.disabled
-        ) {
-
-            return;
-
-        }
-
-
-        startGame();
-
-    }
-);
-
-
-/* =========================
-   もう一回
-========================= */
-
-restartButton.addEventListener(
-    "click",
-    () => {
-
-        startGame();
-
-    }
-);
-
+restartButton.addEventListener("click", () => {
+    startGame();
+});
 
 /* =========================
    読み込み開始
 ========================= */
 
 preloadImages();
-
-
 </script>
-
 </body>
 </html>
